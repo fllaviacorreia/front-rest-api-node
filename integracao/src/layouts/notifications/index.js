@@ -48,7 +48,7 @@ function Notifications() {
 
   const alertContent = (name) => (
     <MDTypography variant="body2" color="white">
-      A simple {name} alert with{" "}
+      A simple {name} alert with 
       <MDTypography component="a" href="#" variant="body2" fontWeight="medium" color="white">
         an example link
       </MDTypography>

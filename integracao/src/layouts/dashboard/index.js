@@ -48,7 +48,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
-                title="Bookings"
+                title="Clientes"
                 count={281}
                 percentage={{
                   color: "success",
@@ -58,11 +58,11 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          {/* <Grid item xs={12} md={6} lg={3}>
+           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
-                title="Today's Users"
+                title="Produtos"
                 count="2,300"
                 percentage={{
                   color: "success",
@@ -72,7 +72,7 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          {/* <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="success"
@@ -101,7 +101,7 @@ function Dashboard() {
                 }}
               />
             </MDBox>
-          </Grid> */}
+          </Grid>  */}
         </Grid>
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
@@ -109,29 +109,25 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="info"
-                  title="website views"
-                  description="Last Campaign Performance"
+                  title="Vendas semanais"
+                  description="Última semana"
                   date="campaign sent 2 days ago"
                   chart={reportsBarChartData}
                 />
               </MDBox>
             </Grid>
-            {/* <Grid item xs={12} md={6} lg={4}>
+             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="success"
-                  title="daily sales"
-                  description={
-                    <>
-                      (<strong>+15%</strong>) increase in today sales.
-                    </>
-                  }
+                  title="Vendas mensais"
+                  description="Últimos 5 meses"
                   date="updated 4 min ago"
                   chart={sales}
                 />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
+            {/*<Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="dark"

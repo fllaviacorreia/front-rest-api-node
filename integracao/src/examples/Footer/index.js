@@ -72,6 +72,11 @@ function Footer({ company, links }) {
             &nbsp;{name}&nbsp;
           </MDTypography>
         </Link>
+        and
+        <Link href="https://www.linkedin.com/in/fllaviacorreia"> 
+        <MDTypography variant="button" fontWeight="medium">
+        &nbsp;Flávia Correia&nbsp;
+          </MDTypography></Link>
         for a better web.
       </MDBox>
       <MDBox

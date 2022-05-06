@@ -1,0 +1,86 @@
+app.use('/address', addressRoutes)
+addressRoutes.post('/', AddressController.createAddress)
+addressRoutes.get('/', AddressController.getAllAddress)
+addressRoutes.get('/:id', AddressController.getAddress)
+addressRoutes.patch('/', AddressController.updateAddress)
+addressRoutes.delete('/', AddressController.deleteAddress)
+
+ const { number, street, district, city, state, country, zipcode } = req.body
+ 
+ 
+ 
+app.use('/client', clientRoutes)
+clientRoutes.post('/', ClientController.createClient)
+clientRoutes.get('/', ClientController.getAllClient)
+clientRoutes.get('/:id', ClientController.getClient)
+clientRoutes.patch('/', ClientController.updateClient)
+clientRoutes.delete('/', ClientController.deleteClient)
+
+const { firstname, lastname, cpf, birthdate } = req.body
+const { number, street, district, city, state, country, zipcode } = req.body
+        
+        
+        
+app.use('/department', departmentRoutes)
+departmentRoutes.post('/', DepartmentController.createDepartment)
+departmentRoutes.get('/', DepartmentController.getAllDepartments)
+departmentRoutes.get('/:id', DepartmentController.getDepartment)
+departmentRoutes.patch('/', DepartmentController.updateDepartment)
+departmentRoutes.delete('/', DepartmentController.deleteDepartment)
+
+const { departmentname } = req.body
+
+
+
+app.use('/employee', employeeRoutes)
+employeeRoutes.post('/', EmployeeController.createEmployee)
+employeeRoutes.get('/', EmployeeController.getAllEmployees)
+employeeRoutes.get('/:id', EmployeeController.getEmployee)
+employeeRoutes.patch('/', EmployeeController.updateEmployee)
+employeeRoutes.delete('/', EmployeeController.deleteEmployee)
+
+const { firstname, lastname, departmentid } = req.body
+
+
+
+app.use('/product', productRoutes)
+productRoutes.post('/', ProductController.createProduct)
+productRoutes.get('/', ProductController.getAllProducts)
+productRoutes.get('/:id', ProductController.getProduct)
+productRoutes.patch('/', ProductController.updateProduct)
+productRoutes.delete('/', ProductController.deleteProduct)
+
+ const {
+            productname,
+            price,
+            description,
+            technicalinformation,
+            quantity,
+            sectionid
+        } = req.body
+        
+        
+        
+app.use('/sale', saleRoutes)
+saleRoutes.post('/', SaleController.createSale)
+saleRoutes.get('/', SaleController.getAllSales)
+saleRoutes.get('/:id', SaleController.getSale)
+saleRoutes.patch('/', SaleController.updateSale)
+
+const {
+            paymentmethod,
+            installment,
+            totalvalue,
+            clientid,
+            employeeid,
+            products
+        } = req.body
+        
+app.use('/section', sectionRoutes)
+sectionRoutes.post('/', SectionController.createSection)
+sectionRoutes.get('/', SectionController.getAllSections)
+sectionRoutes.get('/:id', SectionController.getSection)
+sectionRoutes.patch('/', SectionController.updateSection)
+sectionRoutes.delete('/', SectionController.deleteSection)
+const { sectionname } = req.body
+
