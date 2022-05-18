@@ -58,31 +58,22 @@ function FormClient() {
   const [client, setClient] = useState(initClient);
 
   function onSubmit(ev) {
-    ev.preventDefault(); //pagina não regarrega novamente
-    //definindo se é create ou update para o método e url
-    const method = id ? "put" : "post";
-    const url = id ? `client/${id}` : "/client";
-
-    api[method](url, client).then((response) => {
-      navigate("/clients");
+    ev.preventDefault(); 
+    api.post("/client", client).then((response) => {
+        alert("Cliente cadastrado com sucesso!");
+        navigate("/clients");
     });
-  }
+}
 
+  //pode-se adicionar um verificador para confirmar saída.
   function onCancel(ev) {
     navigate("/clients");
   }
 
   function onChange(ev) {
     const { name, value } = ev.target;
-    setClient({
-      ...client,
-      [name]: value,
-    });
-    console.log(client);
+    setClient({...client, [name]: value,});
   }
-
-
-
 
   return (
     <DashboardLayout>

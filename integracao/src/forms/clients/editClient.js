@@ -43,59 +43,58 @@ function FormClient() {
     // const { firstname, lastname, cpf, birthdate } = req.body
     // const { number, street, district, city, state, country, zipcode } = req.body
 
-    // const initClient = {
-    //     id: 0,
-    //     first_name: "",
-    //     last_name: "",
-    //     cpf: "",
-    //     birth_date: "",
-    //     active: true,
-    // };
+    const initClient = {
+        id: 0,
+        firstname: "",
+        lastname: "",
+        cpf: "",
+        birthdate: "",
+        active: true,
+    };
 
-    const [client, setClient] = useState(null);
+    const [client, setClient] = useState(initClient);
+    const [sentinela, setSentinela] = useState(false);
 
     //get para alteração de usuários
     useEffect(() => {
         if (id !== null || id !== "") {
-            api.get(`/client/${id}`).then((response) => {
-                var formatter = new Date(response.data.client.birth_date).toISOString().split('T')[0];
-                const clientAux = {
+            if (!sentinela) {
+                api.get(`/client/${id}`).then((response) => {
+                    var formatter = new Date(response.data.client.birth_date).toISOString().split('T')[0];
+                    const clientAux = {
                         id: response.data.client.id,
-                        first_name: response.data.client.first_name,
-                        last_name: response.data.client.last_name,
+                        firstname: response.data.client.first_name,
+                        lastname: response.data.client.last_name,
                         cpf: response.data.client.cpf,
-                        birth_date: formatter,
+                        birthdate: formatter,
                         active: response.data.client.active,
-                }
-                setClient({...clientAux});
-                
-            });
+                    }
+                    setClient( {...clientAux});
+
+                });
+                setSentinela(true);
+            }
         }
-    });
+    }, [id, sentinela]);
 
 
     function onSubmit(ev) {
-        ev.preventDefault(); //pagina não regarrega novamente
-        console.log("olá");
-        //definindo se é create ou update para o método e url
-        
+        ev.preventDefault(); 
         api.patch("/client", client).then((response) => {
+            alert("Cliente alterado com sucesso!");
             navigate("/clients");
         });
     }
 
+    //pode-se adicionar um verificador para confirmar saída.
     function onCancel(ev) {
         navigate("/clients");
     }
 
     function onChange(ev) {
         const { name, value } = ev.target;
-        setClient({
-            ...client,
-            [name]: value,
-        });
-        console.log(client);
-    }
+        setClient({...client, [name]: value,});
+      }
 
     return (
         <DashboardLayout>
@@ -138,11 +137,11 @@ function FormClient() {
                                         <MDInput
                                             type="text"
                                             label="Nome"
-                                            name="first_name"
+                                            name="firstname"
                                             size="large"
                                             onChange={onChange}
                                             required="true"
-                                            value={client.first_name}
+                                            value={client.firstname}
                                             sx={{
                                                 m: 2,
                                             }}
@@ -151,10 +150,10 @@ function FormClient() {
                                         <MDInput
                                             type="text"
                                             label="Sobrenome"
-                                            name="last_name"
+                                            name="lastname"
                                             onChange={onChange}
                                             required="true"
-                                            value={client.last_name}
+                                            value={client.lastname}
                                             sx={{
                                                 m: 2,
                                             }}
@@ -162,9 +161,9 @@ function FormClient() {
                                         <MDInput
                                             type="date"
                                             label="Data de nascimento"
-                                            name="birth_date"
+                                            name="birthdate"
                                             onChange={onChange}
-                                            value={client.birth_date}
+                                            value={client.birthdate}
                                             required="true"
                                             sx={{
                                                 p: 2,
