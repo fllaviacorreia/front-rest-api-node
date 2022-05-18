@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import InputMask from 'react-input-mask';
 import { useNavigate, useParams } from "react-router-dom";
 import api from "services/api";
@@ -57,18 +57,8 @@ function FormClient() {
   };
   const [client, setClient] = useState(initClient);
 
-  //get para alteração de usuários
-  useEffect(() => {
-    if (id) {
-      api.get(`/client/${id}`).then((response) => {
-        setClient(...response.data);
-      });
-    }
-  }, []);
-
   function onSubmit(ev) {
     ev.preventDefault(); //pagina não regarrega novamente
-    console.log("olá");
     //definindo se é create ou update para o método e url
     const method = id ? "put" : "post";
     const url = id ? `client/${id}` : "/client";
@@ -91,15 +81,6 @@ function FormClient() {
     console.log(client);
   }
 
-  // function CPFInput(props) {
-  //   return (
-  //     <InputMask
-  //       mask='999.999.999-99'
-  //       value={props.value}
-  //       onChange={props.onChange}>
-  //     </InputMask>
-  //   );
-  // }
 
 
 
@@ -165,37 +146,7 @@ function FormClient() {
                         m: 2,
                       }}
                     />
-                    {/* <CPFInput
-                      label="CPF"
-                      name="cpf"
-                      value={client.cpf}
-                      onChange={onChange}
-                      required="true">
-                    </CPFInput> */}
-
-                    <InputMask
-                      label="CPF"
-                      name="cpf"
-                      mask='999.999.999-99'
-                      value={client.cpf}
-                      onChange={onChange}
-                      required="true">
-                    </InputMask>
-
-                    <MDInput type="text"
-                      label="CPF"
-                      name="cpf"
-                      mask="999.999.999-99"
-                      onChange={onChange}
-                      value={client.cpf}
-                      required="true"
-                      sx={{
-                        m: 2,
-                      }}
-                    />
-
-
-                    <MDInput
+ <MDInput
                       type="date"
                       label="Data de nascimento"
                       name="birthdate"
@@ -206,6 +157,16 @@ function FormClient() {
                         p: 2,
                       }}
                     />
+                    <InputMask
+                      placeholder="CPF *"
+                      name="cpf"
+                      mask='999.999.999-99'
+                      value={client.cpf}
+                      onChange={onChange}
+                      required="true">
+                    </InputMask>
+
+                   
 
                   </MDBox>
                   <MDBox

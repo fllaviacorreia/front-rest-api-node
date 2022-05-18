@@ -47,6 +47,7 @@ import Profile from "layouts/profile";
 
 //Forms
 import FormClient from "forms/clients";
+import FormEditClient from "forms/clients/editClient"
 import FormEmployee from "forms/employees";
 import FormProduct from "forms/products";
 import FormSale from "forms/sales";
@@ -82,7 +83,7 @@ const routes = [
   {
     key:"editClient",
     route: "/clients/edit/:id",
-    component: <FormClient />,
+    component: <FormEditClient />,
   },
   {
     type: "collapse",

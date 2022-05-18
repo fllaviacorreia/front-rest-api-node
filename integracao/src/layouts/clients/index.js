@@ -12,19 +12,12 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import api from "services/api";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -40,97 +33,116 @@ import Footer from "examples/Footer";
 import MDButton from "components/MDButton";
 
 // Data
-// import clientsTableData from "layouts/clients/data/clientsTableData";
+import DataTable from "examples/Tables/DataTable";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import { Icon } from "@mui/material";
 
 
 export default function Tables() {
+
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
     api.get('client').then(response => {
-      setClients(response.data);
-      console.log("clientes ", clients);
+      setClients(response.data.clients);
     });
-  }, []);
+  });
 
-  // async function handleDelete(id) {
-  //   try {
-  //     await api.delete(`/client/${id}`);
-  //     setClients(clients.filter(clients => clients.id !== id));
-  //   } catch (err) {
-  //     alert("Erro ao deletar!");
-  //   }
-  // }
+  async function handleDelete(id){
+    try{
+        await api.delete(`/client/${id}`);
+        setClients(clients.filter(client => client.id !== id));
+        alert("Cliente inativado com sucesso!");
+    }catch(err){
+        alert("Erro ao inativar cliente!");
+    }
+}
 
-  //ou na "escrita" {client.first_name}&nbsp;{client.last_name}
-  // const fullName = ({ first, last }) => (
-  //   <>
-  //     {first}&nbsp;{last}
-  //   </>
-  // );
-
-  const Columns = () => (
-    <TableRow>
-      <TableCell>Nome</TableCell>
-      <TableCell align="right">Sobrenome</TableCell>
-      <TableCell align="right">Data de nascimento</TableCell>
-      <TableCell align="right">CPF</TableCell>
-      <TableCell align="right">Situação</TableCell>
-      <TableCell align="right">Quando cadastrado</TableCell>
-      <TableCell align="right">Editar</TableCell>
-      <TableCell align="right">Deletar</TableCell>
-    </TableRow>
+  const FullName = ({ firstName, secondName }) => (
+    <MDBox display="flex" alignItems="center" lineHeight={1}>
+      <MDBox ml={2} lineHeight={1}>
+        <MDTypography display="block" variant="button" fontWeight="medium">
+          {firstName} {secondName}
+        </MDTypography>
+      </MDBox>
+    </MDBox>
   );
 
-  const Rows = () => (
-    clients.map((client) => (
-      <TableRow
-        key={client.id}
-        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-      >
-        <TableCell component="th" scope="row">
-          {client.first_name}
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {client.last_name}
-        </TableCell>
-        <TableCell align="right">{client.birth_date}</TableCell>
-        <TableCell align="right">{client.cpf}</TableCell>
-        <TableCell align="right">
-          <Active activeClient={client.active} />
-        </TableCell>
-        <TableCell align="right">
-        <MDTypography variant="caption" color="text" fontWeight="medium">
-            {client.createdAt}
-          </MDTypography>
-        </TableCell>
-        <TableCell align="right">
-          <MDTypography component="a" href={`/clients/edit/${client.id}`} variant="caption" color="text" fontWeight="medium">
-            Editar
-          </MDTypography>
-        </TableCell>
-        <TableCell align="right">
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            Remover
-          </MDTypography>
-        </TableCell>
-      </TableRow>
-    )))
 
-   function Active(props) {
-    if (props.activeClient) {
-      return (
-        <MDBadge badgeContent="ATIVO" color="success" variant="gradient" size="sm" />
-      );
+  const Active = ({ tipo, cor }) => (
+    <MDBadge badgeContent={tipo} color={cor} variant="gradient" size="sm" />
+  );
+
+  const GenericInformation = ({ information }) => (
+    <MDTypography variant="caption" color="text" fontWeight="medium">
+      {information}
+    </MDTypography>
+  );
+
+  const EditClient = ({ id }) => (
+    <MDTypography component="a" href={`/clients/edit/${id}`} >
+      <Icon color="info" fontSize="small">editrounded</Icon>
+    </MDTypography>
+  )
+
+  function dateFormat(data) {
+    var formatter = new Date(data).toLocaleDateString('pt-BR');
+    return <GenericInformation information={formatter} />
+  }
+
+  function typeActive(tipo) {
+    if (tipo) {
+      return <Active tipo="ATIVO" cor="success" />
     } else {
-      return (
-        <MDBadge badgeContent="INATIVO" color="error" variant="gradient" size="sm" />
-      );
+      return <Active tipo="INATIVO" cor="dark" />
     }
-   }
+  }
+
+  const { columns, rows } = {
+    columns: [
+      { Header: "nome", accessor: "nome", width: "30%", align: "left" },
+      { Header: "data de nascimento", accessor: "dataNascimento", align: "left" },
+      { Header: "cpf", accessor: "cpf", align: "center" },
+      { Header: "situação", accessor: "situacao", align: "center" },
+      { Header: "quando cadastrado", accessor: "quandoCadastrado", align: "center" },
+      { Header: "ação", accessor: "acao", align: "center" },
+    ],
+
+    rows: clients.map(client =>
+    ({
+      nome: (
+        <FullName firstName={client.first_name} secondName={client.last_name} />
+      ),
+      dataNascimento: (
+        dateFormat(client.birth_date)
+      ),
+      cpf: (
+        <GenericInformation information={client.cpf} />
+      ),
+      situacao: (
+        typeActive(client.active)
+      ),
+      quandoCadastrado: (
+        dateFormat(client.createdAt)
+      ),
+      acao: (
+        <MDBox display="flex" alignItems="center" lineHeight={1}>
+          <MDBox ml={2} lineHeight={1}>
+            <EditClient id={client.id} />
+          </MDBox>
+          <MDBox ml={2} lineHeight={1}>
+            <MDButton variant="text" color="error" onClick={()=>handleDelete(client.id)}>
+              <Icon>deleterounded</Icon>
+            </MDButton>
+          </MDBox>
+        </MDBox>
+      )
+    })),
+  }
 
   return (
     <DashboardLayout>
+      <DashboardNavbar />
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
@@ -145,28 +157,22 @@ export default function Tables() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-
                 <MDTypography variant="h6" color="white">
-                  Clientes
+                  Tabela de clientes
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
-                <MDButton variant="gradient" color="info" size="large" href="/clients/create">Cadastrar novo cliente</MDButton>
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                    <TableHead>
-                      <Columns />
-                    </TableHead>
-                    <TableBody>
-                      <Rows />
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-
-
+                <DataTable
+                  table={{ columns, rows }}
+                  isSorted={false}
+                  entriesPerPage={false}
+                  showTotalEntries={false}
+                  noEndBorder
+                />
               </MDBox>
             </Card>
           </Grid>
+
         </Grid>
       </MDBox>
       <Footer />
