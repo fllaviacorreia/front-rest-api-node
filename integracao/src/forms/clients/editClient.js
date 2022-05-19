@@ -21,7 +21,6 @@ import api from "services/api";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Button from "@mui/material/Button";
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
@@ -34,6 +33,8 @@ import MDInput from "components/MDInput";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Footer from "examples/Footer";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import MDButton from "components/MDButton";
 
 
 function FormClient() {
@@ -69,7 +70,7 @@ function FormClient() {
                         birthdate: formatter,
                         active: response.data.client.active,
                     }
-                    setClient( {...clientAux});
+                    setClient({ ...clientAux });
 
                 });
                 setSentinela(true);
@@ -79,7 +80,7 @@ function FormClient() {
 
 
     function onSubmit(ev) {
-        ev.preventDefault(); 
+        ev.preventDefault();
         api.patch("/client", client).then((response) => {
             alert("Cliente alterado com sucesso!");
             navigate("/clients");
@@ -93,123 +94,125 @@ function FormClient() {
 
     function onChange(ev) {
         const { name, value } = ev.target;
-        setClient({...client, [name]: value,});
-      }
+        setClient({ ...client, [name]: value, });
+    }
 
     return (
         <DashboardLayout>
-            <MDBox py={3}>
-                <Grid container spacing={4}>
-                    <Card>
-                        <MDBox
-                            mx={2}
-                            mt={-3}
-                            py={3}
-                            px={2}
-                            variant="gradient"
-                            bgColor="info"
-                            borderRadius="lg"
-                            coloredShadow="info"
-                        >
-                            <MDTypography variant="h6" color="white">
-                                Alterar cliente
-                            </MDTypography>
-                        </MDBox>
+            <DashboardNavbar />
 
-                        <MDBox m={4}>
-                            <form onSubmit={onSubmit}>
-                                <MDBox m={5}>
-                                    <MDBox
-                                        mx={2}
-                                        mt={-3}
-                                        py={3}
-                                        px={2}
-                                        variant="gradient"
-                                        bgColor="light"
-                                        borderRadius="lg"
-                                        coloredShadow="secondary"
-                                    >
-                                        <MDTypography variant="h6" color="black">
-                                            Dados pessoais
-                                        </MDTypography>
-                                    </MDBox>
-                                    <MDBox m={3}>
-                                        <MDInput
-                                            type="text"
-                                            label="Nome"
-                                            name="firstname"
-                                            size="large"
-                                            onChange={onChange}
-                                            required="true"
-                                            value={client.firstname}
-                                            sx={{
-                                                m: 2,
-                                            }}
-                                        />
+            <MDBox pt={6} pb={3}>
+                <Grid container spacing={6}>
+                    <Grid item xs={12}>
+                        <Card>
+                            <MDBox
+                                mx={2}
+                                mt={-3}
+                                py={3}
+                                px={2}
+                                variant="gradient"
+                                bgColor="info"
+                                borderRadius="lg"
+                                coloredShadow="info"
+                            >
+                                <MDTypography variant="h6" color="white">
+                                    Alterar cliente
+                                </MDTypography>
+                            </MDBox>
 
-                                        <MDInput
-                                            type="text"
-                                            label="Sobrenome"
-                                            name="lastname"
-                                            onChange={onChange}
-                                            required="true"
-                                            value={client.lastname}
-                                            sx={{
-                                                m: 2,
-                                            }}
-                                        />
-                                        <MDInput
-                                            type="date"
-                                            label="Data de nascimento"
-                                            name="birthdate"
-                                            onChange={onChange}
-                                            value={client.birthdate}
-                                            required="true"
-                                            sx={{
-                                                p: 2,
-                                            }}
-                                        />
-                                        <MDBox m={3}>
-                                            <InputMask
-                                                placeholder="CPF *"
-                                                name="cpf"
-                                                mask='999.999.999-99'
-                                                value={client.cpf}
-                                                onChange={onChange}
-                                                required="true">
-                                            </InputMask>
-                                        </MDBox>
-
-                                        <Select p={5}
-                                            placeholder="Situação"
-                                            name="active"
-                                            value={client.active}
-                                            onChange={onChange}
-                                            displayEmpty
+                            <MDBox m={4}>
+                                <form onSubmit={onSubmit}>
+                                    <MDBox m={5}>
+                                        <MDBox
+                                            mx={2}
+                                            mt={-3}
+                                            py={3}
+                                            px={2}
+                                            variant="gradient"
+                                            bgColor="light"
+                                            borderRadius="lg"
+                                            coloredShadow="secondary"
                                         >
-                                            <MenuItem value="">Selecione</MenuItem>
-                                            <MenuItem value="true">Ativo</MenuItem>
-                                            <MenuItem value="false">Inativo</MenuItem>
-                                        </Select>
+                                            <MDTypography variant="h6" color="black">
+                                                Dados pessoais
+                                            </MDTypography>
+                                        </MDBox>
+                                        <MDBox m={3}>
+                                            <MDInput
+                                                type="text"
+                                                label="Nome"
+                                                name="firstname"
+                                                size="large"
+                                                onChange={onChange}
+                                                required="true"
+                                                value={client.firstname}
+                                                sx={{
+                                                    m: 2,
+                                                }}
+                                            />
+
+                                            <MDInput
+                                                type="text"
+                                                label="Sobrenome"
+                                                name="lastname"
+                                                onChange={onChange}
+                                                required="true"
+                                                value={client.lastname}
+                                                sx={{
+                                                    m: 2,
+                                                }}
+                                            />
+                                            <MDInput
+                                                type="date"
+                                                label="Data de nascimento"
+                                                name="birthdate"
+                                                onChange={onChange}
+                                                value={client.birthdate}
+                                                required="true"
+                                                sx={{
+                                                    p: 2,
+                                                }}
+                                            />
+                                            <MDBox m={3}>
+                                                <InputMask
+                                                    placeholder="CPF *"
+                                                    name="cpf"
+                                                    mask='999.999.999-99'
+                                                    value={client.cpf}
+                                                    onChange={onChange}
+                                                    required="true">
+                                                </InputMask>
+                                            </MDBox>
+
+                                            <Select p={5}
+                                                placeholder="Situação"
+                                                name="active"
+                                                value={client.active}
+                                                onChange={onChange}
+                                                displayEmpty
+                                            >
+                                                <MenuItem value="">Selecione</MenuItem>
+                                                <MenuItem value="true">Ativo</MenuItem>
+                                                <MenuItem value="false">Inativo</MenuItem>
+                                            </Select>
 
 
+                                        </MDBox>
                                     </MDBox>
-                                </MDBox>
 
-                                <MDBox m={5} p={5}>
-                                    <Button
-                                        type="submit"
-                                    >
-                                        Atualizar
-                                    </Button>
+                                    <MDBox m={5} p={5}>
+                    <MDButton type="submit" color="info">
+                      Atualizar
+                    </MDButton>
+                    &nbsp;&nbsp;&nbsp;
+                    <MDButton color="info" onClick={() => onCancel()}>Cancelar</MDButton>
+                  </MDBox>
+                                </form>
+                            </MDBox>
+                        </Card>
+                    </Grid>
 
-                                    <Button onClick={onCancel}>Cancelar</Button>
-                                </MDBox>
-                            </form>
-                        </MDBox>
-                    </Card>
                 </Grid>
-
             </MDBox>
             <Footer />
         </DashboardLayout>

@@ -14,8 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import React, { useState, useEffect } from "react";
-import InputMask from 'react-input-mask';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "services/api";
 
 // @mui material components
@@ -36,9 +35,9 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MDButton from "components/MDButton";
 
 
-function FormProduct() {
+function FormEditProduct() {
   const navigate = useNavigate();
-
+  const { id } = useParams();
   /**
    * productname,
             price,
@@ -48,23 +47,45 @@ function FormProduct() {
             sectionid
    */
   const initProduct = {
+      id: 0,
     productname: "",
     price: "",
     description: "",
     technicalinformation: "",
     quantity: 0,
     sectionid: 0,
+    active: true,
 
   };
 
   const [product, setProduct] = useState(initProduct);
   const [sections, setSections] = useState([]);
+  const [sentinela, setSentinela] = useState(false);
 
   useEffect(() => {
     api.get("section").then((response) => {
       setSections(response.data.sections);
     });
-  });
+  if (id !== null || id !== "") {
+          if (!sentinela) {
+              api.get(`/product/${id}`).then((response) => {
+                  const productAux = {
+                      id: response.data.product.id,
+                      productname: response.data.product.product_name,
+                      price: response.data.product.price,
+                      description: response.data.product.description,
+                      technicalinformation: response.data.product.technical_information,
+                      quantity: response.data.product.quantity,
+                      sectionid: response.data.product.SectionId,
+                      active: response.data.product.active,
+                  }
+                  setProduct({ ...productAux });
+
+              });
+              setSentinela(true);
+          }
+      }
+  }, [id, sentinela]);
 
   async function saveSection(value) {
     try {
@@ -79,8 +100,8 @@ function FormProduct() {
   function onSubmit(ev) {
     ev.preventDefault();
     console.log(product)
-    api.post("/product", product).then((response) => {
-      alert("Produto cadastrado com sucesso!");
+    api.patch("/product", product).then((response) => {
+      alert("Produto atualizado com sucesso!");
       navigate("/products");
     });
   }
@@ -124,7 +145,7 @@ function FormProduct() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Cadastrar novo produto
+                  Atualizar produto
                 </MDTypography>
               </MDBox>
 
@@ -223,12 +244,24 @@ function FormProduct() {
                         {sections.map((section) => (<MenuItem value={section.id}>{section.section_name}</MenuItem>))
                         }
                       </Select>
+
+                      <Select p={5}
+                                            placeholder="Situação"
+                                            name="active"
+                                            value={product.active}
+                                            onChange={onChange}
+                                            displayEmpty
+                                        >
+                                            <MenuItem value="">Selecione</MenuItem>
+                                            <MenuItem value="true">Ativo</MenuItem>
+                                            <MenuItem value="false">Inativo</MenuItem>
+                                        </Select>
                     </MDBox>
 
                   </MDBox>
                   <MDBox m={5} p={5}>
                     <MDButton type="submit" color="info">
-                      Cadastrar
+                      Atualizar
                     </MDButton>
                     &nbsp;&nbsp;&nbsp;
                     <MDButton color="info" onClick={() => onCancel()}>Cancelar</MDButton>
@@ -244,4 +277,4 @@ function FormProduct() {
   );
 }
 
-export default FormProduct;
+export default FormEditProduct;

@@ -42,6 +42,7 @@ import Products from "layouts/products";
 import Sales from "layouts/sales";
 import Departments from "layouts/departments";
 import Employees from "layouts/employees";
+import Address from "layouts/address"
 import Billing from "layouts/billing";
 import Profile from "layouts/profile";
 
@@ -49,7 +50,9 @@ import Profile from "layouts/profile";
 import FormClient from "forms/clients";
 import FormEditClient from "forms/clients/editClient"
 import FormEmployee from "forms/employees";
+import FormEditEmployee from "forms/employees/editEmployee";
 import FormProduct from "forms/products";
+import FormEditProduct from "forms/products/editProduct";
 import FormSale from "forms/sales";
 
 // @mui icons
@@ -87,6 +90,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Todos os endereços",
+    key: "address",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/address",
+    component: <Address />,
+  },
+  {
+    type: "collapse",
     name: "Todos os produtos",
     key: "products",
     icon: <Icon fontSize="small">table_view</Icon>,
@@ -100,6 +111,11 @@ const routes = [
     key:"newProduct",
     route: "/products/create",
     component: <FormProduct />,
+  },
+  {
+    key:"editProduct",
+    route: "/products/edit/:id",
+    component: <FormEditProduct />,
   },
   {
     type: "collapse",
@@ -143,22 +159,27 @@ const routes = [
     component: <FormEmployee />,
   },
   {
-    type: "collapse",
-    name: "Cartões",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
+    key:"editEmployee",
+    route: "/employees/edit/:id",
+    component: <FormEditEmployee />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "Cartões",
+  //   key: "billing",
+  //   icon: <Icon fontSize="small">receipt_long</Icon>,
+  //   route: "/billing",
+  //   component: <Billing />,
+  // },
   
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Profile",
+  //   key: "profile",
+  //   icon: <Icon fontSize="small">person</Icon>,
+  //   route: "/profile",
+  //   component: <Profile />,
+  // },
   
 ];
 
