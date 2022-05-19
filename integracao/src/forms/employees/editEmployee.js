@@ -97,7 +97,7 @@ function FormEmployee() {
     if (departmentname == null || departmentname === "") {
       alert("Nenhum valor inserido!");
     } else {
-      saveDepartment(departmentname);
+      saveDepartment(departmentname.toUpperCase());
     }
   }
 

@@ -15,7 +15,7 @@ Coded by www.creative-tim.com
 
 import React, { useState, useEffect } from "react";
 import InputMask from 'react-input-mask';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "services/api";
 
 // @mui material components
@@ -31,78 +31,60 @@ import MDInput from "components/MDInput";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Footer from "examples/Footer";
-import { MenuItem, Select } from "@mui/material";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MDButton from "components/MDButton";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 
-function FormProduct() {
+function FormAddress() {
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  /**
-   * productname,
-            price,
-            description,
-            technicalinformation,
-            quantity,
-            sectionid
-   */
-  const initProduct = {
-    productname: "",
-    price: "",
-    description: "",
-    technicalinformation: "",
-    quantity: 0,
-    sectionid: 0,
+  // const { firstname, lastname, cpf, birthdate } = req.body
+  // const { number, street, district, city, state, country, zipcode } = req.body
 
+  const initAddress = {
+    id: 0,
+    number: "",
+    street: "",
+    district: "",
+    city: "",
+    state: "",
+    country: "",
+    zipcode: "",
   };
+  const [address, setAddress] = useState(initAddress);
+  const [sentinela, setSentinela] = useState(false);
 
-  const [product, setProduct] = useState(initProduct);
-  const [sections, setSections] = useState([]);
-
+  //get para alteração de usuários
   useEffect(() => {
-    api.get("section").then((response) => {
-      setSections(response.data.sections);
-    });
-  });
+    if (id !== null || id !== "") {
+      if (!sentinela) {
+        api.get(`/address/${id}`).then((response) => {
+          setAddress({ ...response.data.address });
 
-  async function saveSection(value) {
-    try {
-      await api.post('/section', { sectionname: value }).then((response) => {
-        alert("Nova seção cadastrado.")
-      });
-    } catch (err) {
-      alert("Erro ao cadastrar seção.");
+        });
+        setSentinela(true);
+      }
     }
-  }
+  }, [id, sentinela]);
+
 
   function onSubmit(ev) {
     ev.preventDefault();
-    console.log(product)
-    api.post("/product", product).then((response) => {
-      alert("Produto cadastrado com sucesso!");
-      navigate("/products");
+    api.patch("/address", address).then((response) => {
+      alert("Endereço alterado com sucesso!");
+      navigate("/address");
     });
-  }
-
-  function newSection() {
-    const sectionname = prompt("Insira o nome da seção", "");
-    console.log("item = ", sectionname);
-    if (sectionname == null || sectionname === "") {
-      alert("Nenhum valor inserido!");
-    } else {
-      saveSection(sectionname.toUpperCase());
-    }
   }
 
   //pode-se adicionar um verificador para confirmar saída.
   function onCancel(ev) {
-    navigate("/products");
+    navigate("/address");
   }
 
   function onChange(ev) {
     const { name, value } = ev.target;
-    setProduct({ ...product, [name]: value, });
+    setAddress({ ...address, [name]: value, });
   }
 
   return (
@@ -124,16 +106,11 @@ function FormProduct() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Cadastrar novo produto
+                  Alterar endereço
                 </MDTypography>
               </MDBox>
 
               <MDBox m={4}>
-                <MDBox ml={2} lineHeight={1}>
-                  <MDButton color="info" onClick={() => newSection()}>
-                    Nova seção
-                  </MDButton>
-                </MDBox>
                 <form onSubmit={onSubmit}>
                   <MDBox m={5}>
                     <MDBox
@@ -147,18 +124,39 @@ function FormProduct() {
                       coloredShadow="secondary"
                     >
                       <MDTypography variant="h6" color="black">
-                        Dados do produto
+                        Endereço
                       </MDTypography>
                     </MDBox>
                     <MDBox m={3}>
                       <MDInput
                         type="text"
-                        label="Nome"
-                        name="productname"
-                        size="large"
+                        label="Rua"
+                        name="street"
                         onChange={onChange}
+                        value={address.street}
                         required="true"
-                        value={product.productname}
+                        sx={{
+                          m: 2,
+                        }}
+                      />
+                      <MDInput
+                        type="text"
+                        label="Número"
+                        name="number"
+                        onChange={onChange}
+                        value={address.number}
+                        required="true"
+                        sx={{
+                          m: 2,
+                        }}
+                      />
+                      <MDInput
+                        type="text"
+                        label="Bairro"
+                        name="district"
+                        onChange={onChange}
+                        value={address.district}
+                        required="true"
                         sx={{
                           m: 2,
                         }}
@@ -166,69 +164,53 @@ function FormProduct() {
 
                       <MDInput
                         type="text"
-                        label="Preço"
-                        name="price"
+                        label="Cidade"
+                        name="city"
                         onChange={onChange}
+                        value={address.city}
                         required="true"
-                        value={product.price}
                         sx={{
                           m: 2,
                         }}
                       />
-
-<MDInput
+                      <MDInput
                         type="text"
-                        label="Descrição"
-                        name="description"
+                        label="Estado"
+                        name="state"
                         onChange={onChange}
+                        value={address.state}
                         required="true"
-                        value={product.description}
                         sx={{
                           m: 2,
                         }}
                       />
-
-<MDInput
+                      <MDInput
                         type="text"
-                        label="Informações técnicas"
-                        name="technicalinformation"
+                        label="País"
+                        name="country"
                         onChange={onChange}
+                        value={address.country}
                         required="true"
-                        value={product.technicalinformation}
                         sx={{
                           m: 2,
                         }}
                       />
-
-<MDInput
-                        type="number"
-                        label="Quantidade"
-                        name="quantity"
+                      <MDInput
+                        type="text"
+                        label="Código Postal"
+                        name="zipcode"
                         onChange={onChange}
+                        value={address.zipcode}
                         required="true"
-                        value={product.quantity}
                         sx={{
                           m: 2,
                         }}
                       />
-                      <Select pt={5}
-                        placeholder="Seção"
-                        name="sectionid"
-                        value={product.sectionid}
-                        onChange={onChange}
-                        displayEmpty
-                      >
-                        <MenuItem value={0}>Selecione</MenuItem>
-
-                        {sections.map((section) => (<MenuItem value={section.id}>{section.section_name}</MenuItem>))
-                        }
-                      </Select>
                     </MDBox>
-
                   </MDBox>
                   <MDBox m={5} p={5}>
                     <MDButton type="submit" color="info">
-                      Cadastrar
+                      Atualiazr
                     </MDButton>
                     &nbsp;&nbsp;&nbsp;
                     <MDButton color="info" onClick={() => onCancel()}>Cancelar</MDButton>
@@ -244,4 +226,4 @@ function FormProduct() {
   );
 }
 
-export default FormProduct;
+export default FormAddress;

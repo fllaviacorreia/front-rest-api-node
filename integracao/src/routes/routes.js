@@ -38,17 +38,19 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
 import Clients from "layouts/clients";
-import Products from "layouts/products";
-import Sales from "layouts/sales";
-import Departments from "layouts/departments";
-import Employees from "layouts/employees";
 import Address from "layouts/address"
-import Billing from "layouts/billing";
-import Profile from "layouts/profile";
+import Employees from "layouts/employees";
+import Products from "layouts/products";
+import Sections from "layouts/sections";
+import Departments from "layouts/departments";
+import Sales from "layouts/sales";
+// import Billing from "layouts/billing";
+// import Profile from "layouts/profile";
 
 //Forms
 import FormClient from "forms/clients";
 import FormEditClient from "forms/clients/editClient"
+import FormEditAddress from "forms/address";
 import FormEmployee from "forms/employees";
 import FormEditEmployee from "forms/employees/editEmployee";
 import FormProduct from "forms/products";
@@ -69,7 +71,7 @@ const routes = [
   },
   {
     type:"collapse",
-    name: "Todos os clientes",
+    name: "Clientes",
     icon: <Icon fontSize="small">table_view</Icon>,
     key:"allClients",
     route: "/clients",
@@ -77,7 +79,7 @@ const routes = [
   },
   {
     type:"collapse",
-    name: "Cadastrar novo cliente",
+    name: "Novo cliente",
     icon: <Icon fontSize="small">table_view</Icon>,
     key:"newClient",
     route: "/clients/create",
@@ -90,15 +92,20 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Todos os endereços",
+    name: "Endereços",
     key: "address",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/address",
     component: <Address />,
   },
   {
+    key:"editAddress",
+    route: "/address/edit/:id",
+    component: <FormEditAddress />,
+  },
+  {
     type: "collapse",
-    name: "Todos os produtos",
+    name: "Produtos",
     key: "products",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/products",
@@ -106,7 +113,7 @@ const routes = [
   },
   {
     type:"collapse",
-    name: "Cadastrar novo produto",
+    name: "Novo produto",
     icon: <Icon fontSize="small">table_view</Icon>,
     key:"newProduct",
     route: "/products/create",
@@ -119,6 +126,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Seções",
+    key: "sections",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/sections",
+    component: <Sections />,
+  },
+  {
+    type: "collapse",
     name: "Vendas",
     key: "sales",
     icon: <Icon fontSize="small">table_view</Icon>,
@@ -127,21 +142,12 @@ const routes = [
   },
   {
     type:"collapse",
-    name: "Cadastrar nova venda",
+    name: "Nova venda",
     icon: <Icon fontSize="small">table_view</Icon>,
     key:"newSale",
     route: "/sales/create",
     component: <FormSale />,
   },
-  {
-    type: "collapse",
-    name: "Departamentos",
-    key: "departments",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/departments",
-    component: <Departments />,
-  },
-
   {
     type: "collapse",
     name: "Colaboradores",
@@ -152,7 +158,7 @@ const routes = [
   },
   {
     type:"collapse",
-    name: "Cadastrar novo colaborador",
+    name: "Novo colaborador",
     icon: <Icon fontSize="small">table_view</Icon>,
     key:"newEmployee",
     route: "/employees/create",
@@ -162,6 +168,14 @@ const routes = [
     key:"editEmployee",
     route: "/employees/edit/:id",
     component: <FormEditEmployee />,
+  },
+  {
+    type: "collapse",
+    name: "Departamentos",
+    key: "departments",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/departments",
+    component: <Departments />,
   },
   // {
   //   type: "collapse",

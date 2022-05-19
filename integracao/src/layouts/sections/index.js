@@ -38,24 +38,35 @@ import { Icon } from "@mui/material";
 
 
 export default function Tables() {
-
-  const [address, setAddress] = useState([]);
+  const [sections, setSections] = useState([]);
 
   useEffect(() => {
-    api.get('address').then(response => {
-      setAddress(response.data.addresses);
+    api.get('section').then(response => {
+      setSections(response.data.sections);
     });
+
   });
 
-  async function handleDelete(id){
-    try{
-        await api.delete(`/address/${id}`);
-        setAddress(address.filter(address => address.id !== id));
-        alert("Endereço excluido com sucesso!");
-    }catch(err){
-        alert("Erro ao excluir endereço!");
+  async function handleDelete(id) {
+    try {
+      await api.delete(`/section/${id}`);
+      setSections(sections.filter(section => section.id !== id));
+      alert("Seção excluída com sucesso!");
+    } catch (err) {
+      alert("Erro ao excluir seção!");
     }
-}
+  }
+
+  const SectionName = ({ name }) => (
+    <MDBox display="flex" alignItems="center" lineHeight={1}>
+      <MDBox ml={2} lineHeight={1}>
+        <MDTypography display="block" variant="button" fontWeight="medium">
+          {name}
+        </MDTypography>
+      </MDBox>
+    </MDBox>
+  );
+
 
   const GenericInformation = ({ information }) => (
     <MDTypography variant="caption" color="text" fontWeight="medium">
@@ -63,63 +74,56 @@ export default function Tables() {
     </MDTypography>
   );
 
-  const EditAddress = ({ id }) => (
-    <MDTypography component="a" href={`/address/edit/${id}`} >
-      <Icon color="info" fontSize="small">editrounded</Icon>
-    </MDTypography>
-  )
 
+  function editSection (id) {
+    const sectionname = prompt("Insira o nome da seção", "");
+    if (sectionname == null || sectionname === "") {
+      alert("Nenhum valor inserido!");
+    } else {
+      saveSection(id, sectionname.toUpperCase());
+    }
+  }
+
+  async function saveSection(id, name) {
+    try {
+      await api.patch('/section', {id:id, sectionname: name }).then((response) => {
+        alert("Seção alterada.")
+      });
+    } catch (err) {
+      alert("Erro ao alterar seção.");
+    }
+  }
   function dateFormat(data) {
     var formatter = new Date(data).toLocaleDateString('pt-BR');
     return <GenericInformation information={formatter} />
   }
 
+
   const { columns, rows } = {
     columns: [
-      { Header: "rua", accessor: "street",  align: "left" },
-      { Header: "bairro", accessor: "district", align: "left" },
-      { Header: "número", accessor: "number", align: "center" },
-      { Header: "cidade", accessor: "city", align: "center" },
-      { Header: "estado", accessor: "state", align: "center" },
-      { Header: "país", accessor: "country", align: "center" },
-      { Header: "código postal", accessor: "zipcode", align: "center" },
+      { Header: "nome", accessor: "nome", width: "40%", align: "left" },
       { Header: "quando cadastrado", accessor: "quandoCadastrado", align: "center" },
       { Header: "ação", accessor: "acao", align: "center" },
     ],
 
-    rows: address.map(address =>
+    rows: sections.map(section =>
     ({
-      street: (
-        <GenericInformation information={address.street} />
+      nome: (
+        <SectionName name={section.section_name} />
       ),
-      district: (
-        <GenericInformation information={address.district} />
-      ),
-      number: (
-        <GenericInformation information={address.number} />
-      ),
-      city: (
-        <GenericInformation information={address.city} />
-      ),
-      state: (
-        <GenericInformation information={address.state} />
-      ),
-      country: (
-        <GenericInformation information={address.country} />
-      ),
-      zipcode: (
-        <GenericInformation information={address.zipcode} />
-      ),
+
       quandoCadastrado: (
-        dateFormat(address.createdAt)
+        dateFormat(section.createdAt)
       ),
       acao: (
         <MDBox display="flex" alignItems="center" lineHeight={1}>
           <MDBox ml={2} lineHeight={1}>
-            <EditAddress id={address.id} />
+          <MDButton variant="text" color="info" onClick={() => editSection(section.id)}>
+              <Icon>editrounded</Icon>
+            </MDButton>
           </MDBox>
           <MDBox ml={2} lineHeight={1}>
-            <MDButton variant="text" color="error" onClick={()=>handleDelete(address.id)}>
+            <MDButton variant="text" color="error" onClick={() => handleDelete(section.id)}>
               <Icon>deleterounded</Icon>
             </MDButton>
           </MDBox>
@@ -146,7 +150,7 @@ export default function Tables() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Tabela de endereços
+                  Tabela de seções
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
@@ -160,7 +164,6 @@ export default function Tables() {
               </MDBox>
             </Card>
           </Grid>
-
         </Grid>
       </MDBox>
       <Footer />

@@ -47,7 +47,7 @@ function FormEditProduct() {
             sectionid
    */
   const initProduct = {
-      id: 0,
+    id: 0,
     productname: "",
     price: "",
     description: "",
@@ -66,25 +66,25 @@ function FormEditProduct() {
     api.get("section").then((response) => {
       setSections(response.data.sections);
     });
-  if (id !== null || id !== "") {
-          if (!sentinela) {
-              api.get(`/product/${id}`).then((response) => {
-                  const productAux = {
-                      id: response.data.product.id,
-                      productname: response.data.product.product_name,
-                      price: response.data.product.price,
-                      description: response.data.product.description,
-                      technicalinformation: response.data.product.technical_information,
-                      quantity: response.data.product.quantity,
-                      sectionid: response.data.product.SectionId,
-                      active: response.data.product.active,
-                  }
-                  setProduct({ ...productAux });
-
-              });
-              setSentinela(true);
+    if (id !== null || id !== "") {
+      if (!sentinela) {
+        api.get(`/product/${id}`).then((response) => {
+          const productAux = {
+            id: response.data.product.id,
+            productname: response.data.product.product_name,
+            price: response.data.product.price,
+            description: response.data.product.description,
+            technicalinformation: response.data.product.technical_information,
+            quantity: response.data.product.quantity,
+            sectionid: response.data.product.SectionId,
+            active: response.data.product.active,
           }
+          setProduct({ ...productAux });
+
+        });
+        setSentinela(true);
       }
+    }
   }, [id, sentinela]);
 
   async function saveSection(value) {
@@ -92,6 +92,7 @@ function FormEditProduct() {
       await api.post('/section', { sectionname: value }).then((response) => {
         alert("Nova seção cadastrado.")
       });
+      setSentinela(false);
     } catch (err) {
       alert("Erro ao cadastrar seção.");
     }
@@ -112,7 +113,7 @@ function FormEditProduct() {
     if (sectionname == null || sectionname === "") {
       alert("Nenhum valor inserido!");
     } else {
-      saveSection(sectionname);
+      saveSection(sectionname.toUpperCase());
     }
   }
 
@@ -197,7 +198,7 @@ function FormEditProduct() {
                         }}
                       />
 
-<MDInput
+                      <MDInput
                         type="text"
                         label="Descrição"
                         name="description"
@@ -209,7 +210,7 @@ function FormEditProduct() {
                         }}
                       />
 
-<MDInput
+                      <MDInput
                         type="text"
                         label="Informações técnicas"
                         name="technicalinformation"
@@ -221,7 +222,7 @@ function FormEditProduct() {
                         }}
                       />
 
-<MDInput
+                      <MDInput
                         type="number"
                         label="Quantidade"
                         name="quantity"
@@ -246,16 +247,16 @@ function FormEditProduct() {
                       </Select>
 
                       <Select p={5}
-                                            placeholder="Situação"
-                                            name="active"
-                                            value={product.active}
-                                            onChange={onChange}
-                                            displayEmpty
-                                        >
-                                            <MenuItem value="">Selecione</MenuItem>
-                                            <MenuItem value="true">Ativo</MenuItem>
-                                            <MenuItem value="false">Inativo</MenuItem>
-                                        </Select>
+                        placeholder="Situação"
+                        name="active"
+                        value={product.active}
+                        onChange={onChange}
+                        displayEmpty
+                      >
+                        <MenuItem value="">Selecione</MenuItem>
+                        <MenuItem value="true">Ativo</MenuItem>
+                        <MenuItem value="false">Inativo</MenuItem>
+                      </Select>
                     </MDBox>
 
                   </MDBox>

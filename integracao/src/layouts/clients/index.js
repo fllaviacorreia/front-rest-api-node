@@ -100,7 +100,7 @@ export default function Tables() {
 
   const { columns, rows } = {
     columns: [
-      { Header: "nome", accessor: "nome", width: "30%", align: "left" },
+      { Header: "nome", accessor: "nome", width: "40%", align: "left" },
       { Header: "data de nascimento", accessor: "dataNascimento", align: "left" },
       { Header: "cpf", accessor: "cpf", align: "center" },
       { Header: "situação", accessor: "situacao", align: "center" },
