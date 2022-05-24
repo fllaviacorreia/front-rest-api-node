@@ -75,7 +75,7 @@ export default function Tables() {
   );
 
 
-  function editSection (id) {
+  function editSection(id) {
     const sectionname = prompt("Insira o nome da seção", "");
     if (sectionname == null || sectionname === "") {
       alert("Nenhum valor inserido!");
@@ -86,7 +86,7 @@ export default function Tables() {
 
   async function saveSection(id, name) {
     try {
-      await api.patch('/section', {id:id, sectionname: name }).then((response) => {
+      await api.patch('/section', { id: id, sectionname: name }).then((response) => {
         alert("Seção alterada.")
       });
     } catch (err) {
@@ -118,7 +118,7 @@ export default function Tables() {
       acao: (
         <MDBox display="flex" alignItems="center" lineHeight={1}>
           <MDBox ml={2} lineHeight={1}>
-          <MDButton variant="text" color="info" onClick={() => editSection(section.id)}>
+            <MDButton variant="text" color="info" onClick={() => editSection(section.id)}>
               <Icon>editrounded</Icon>
             </MDButton>
           </MDBox>

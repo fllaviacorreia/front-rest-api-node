@@ -21,6 +21,8 @@ import api from "services/api";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -69,7 +71,7 @@ function FormProduct() {
   async function saveSection(value) {
     try {
       await api.post('/section', { sectionname: value }).then((response) => {
-        alert("Nova seção cadastrado.")
+        alert("Nova seção cadastrada.")
       });
     } catch (err) {
       alert("Erro ao cadastrar seção.");
@@ -166,7 +168,7 @@ function FormProduct() {
 
                       <MDInput
                         type="text"
-                        label="Preço"
+                        label="Preço (R$)"
                         name="price"
                         onChange={onChange}
                         required="true"
@@ -176,7 +178,7 @@ function FormProduct() {
                         }}
                       />
 
-<MDInput
+                      <MDInput
                         type="text"
                         label="Descrição"
                         name="description"
@@ -188,7 +190,7 @@ function FormProduct() {
                         }}
                       />
 
-<MDInput
+                      <MDInput
                         type="text"
                         label="Informações técnicas"
                         name="technicalinformation"
@@ -200,7 +202,7 @@ function FormProduct() {
                         }}
                       />
 
-<MDInput
+                      <MDInput
                         type="number"
                         label="Quantidade"
                         name="quantity"
@@ -211,18 +213,22 @@ function FormProduct() {
                           m: 2,
                         }}
                       />
-                      <Select pt={5}
-                        placeholder="Seção"
-                        name="sectionid"
-                        value={product.sectionid}
-                        onChange={onChange}
-                        displayEmpty
-                      >
-                        <MenuItem value={0}>Selecione</MenuItem>
+                      <FormControl sx={{ p: 1, minWidth: 100 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label" >Seção</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-autowidth-label"
+                          label="Seção"
+                          name="sectionid"
+                          value={product.sectionid}
+                          onChange={onChange}
+                          displayEmpty
+                        >
+                          <MenuItem value={0}>Selecione</MenuItem>
 
-                        {sections.map((section) => (<MenuItem value={section.id}>{section.section_name}</MenuItem>))
-                        }
-                      </Select>
+                          {sections.map((section) => (<MenuItem value={section.id}>{section.section_name}</MenuItem>))
+                          }
+                        </Select>
+                      </FormControl>
                     </MDBox>
 
                   </MDBox>

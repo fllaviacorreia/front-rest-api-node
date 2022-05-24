@@ -22,6 +22,8 @@ import api from "services/api";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -163,22 +165,26 @@ function FormEmployee() {
                           m: 2,
                         }}
                       />
-                      <Select p={5}
-                        placeholder="Departamento"
-                        name="departmentid"
-                        value={employee.departmentid}
-                        onChange={onChange}
-                        displayEmpty
-                      >
-                        <MenuItem value={0}>Selecione</MenuItem>
+                      <FormControl sx={{ p: 1, minWidth: 100 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label" >Departamento</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-autowidth-label"
+                          label="Departamento"
+                          name="departmentid"
+                          value={employee.departmentid}
+                          onChange={onChange}
+                          displayEmpty
+                        >
+                          <MenuItem value={0}>Selecione</MenuItem>
 
-                        {departments.map((department) => (<MenuItem value={department.id}>{department.department_name}</MenuItem>))
-                        }
-                      </Select>
+                          {departments.map((department) => (<MenuItem value={department.id}>{department.department_name}</MenuItem>))
+                          }
+                        </Select>
+                      </FormControl>
                     </MDBox>
 
                   </MDBox>
-                 
+
                   <MDBox m={5} p={5}>
                     <MDButton type="submit" color="info">
                       Cadastrar
@@ -186,8 +192,8 @@ function FormEmployee() {
                     &nbsp;&nbsp;&nbsp;
                     <MDButton color="info" onClick={() => onCancel()}>Cancelar</MDButton>
                   </MDBox>
-              
-                  
+
+
                 </form>
               </MDBox>
             </Card>

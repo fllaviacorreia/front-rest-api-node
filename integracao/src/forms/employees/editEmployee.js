@@ -20,6 +20,8 @@ import api from "services/api";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -39,7 +41,7 @@ function FormEmployee() {
   const navigate = useNavigate();
   const { id } = useParams();
   const initEmployee = {
-      id: 0,
+    id: 0,
     firstname: "",
     lastname: "",
     departmentid: 0,
@@ -53,35 +55,35 @@ function FormEmployee() {
   //get para alteração de usuários
   useEffect(() => {
     api.get("department").then((response) => {
-        setDepartments(response.data.departments);
-      });
-      if (id !== null || id !== "") {
-          if (!sentinela) {
-              api.get(`/employee/${id}`).then((response) => {
-                  const employeeAux = {
-                      id: response.data.employee.id,
-                      firstname: response.data.employee.first_name,
-                      lastname: response.data.employee.last_name,
-                      departmentid: response.data.employee.departmentId,
-                      active: response.data.employee.active,
-                  }
-                  setEmployee({ ...employeeAux });
-
-              });
-              setSentinela(true);
+      setDepartments(response.data.departments);
+    });
+    if (id !== null || id !== "") {
+      if (!sentinela) {
+        api.get(`/employee/${id}`).then((response) => {
+          const employeeAux = {
+            id: response.data.employee.id,
+            firstname: response.data.employee.first_name,
+            lastname: response.data.employee.last_name,
+            departmentid: response.data.employee.departmentId,
+            active: response.data.employee.active,
           }
-      }
-  }, [id, sentinela]);
- 
-  async function saveDepartment(value){
-    try{
-        await api.post('/department', { departmentname: value }).then((response) => {
-          alert("Novo departamento cadastrado.")
+          setEmployee({ ...employeeAux });
+
         });
-    }catch(err){        
+        setSentinela(true);
+      }
+    }
+  }, [id, sentinela]);
+
+  async function saveDepartment(value) {
+    try {
+      await api.post('/department', { departmentname: value }).then((response) => {
+        alert("Novo departamento cadastrado.")
+      });
+    } catch (err) {
       alert("Erro ao cadastrar departamento.");
     }
-}
+  }
 
   function onSubmit(ev) {
     ev.preventDefault();
@@ -114,112 +116,120 @@ function FormEmployee() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-       
-       <MDBox pt={6} pb={3}>
-         <Grid container spacing={6}>
-           <Grid item xs={12}>
-             <Card>
-            <MDBox
-              mx={2}
-              mt={-3}
-              py={3}
-              px={2}
-              variant="gradient"
-              bgColor="info"
-              borderRadius="lg"
-              coloredShadow="info"
-            >
-              <MDTypography variant="h6" color="white">
-                Atualizar colaborador
-              </MDTypography>
-            </MDBox>
 
-            <MDBox m={4}>
-              <MDBox ml={2} lineHeight={1}>
-                <MDButton color="info" onClick={() => newDepartment()}>
-                  Novo departamento
-                </MDButton>
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant="h6" color="white">
+                  Atualizar colaborador
+                </MDTypography>
               </MDBox>
-              <form onSubmit={onSubmit}>
-                <MDBox m={5}>
-                  <MDBox
-                    mx={2}
-                    mt={-3}
-                    py={3}
-                    px={2}
-                    variant="gradient"
-                    bgColor="light"
-                    borderRadius="lg"
-                    coloredShadow="secondary"
-                  >
-                    <MDTypography variant="h6" color="black">
-                      Dados pessoais
-                    </MDTypography>
-                  </MDBox>
-                  <MDBox m={3}>
-                    <MDInput
-                      type="text"
-                      label="Nome"
-                      name="firstname"
-                      size="large"
-                      onChange={onChange}
-                      required="true"
-                      value={employee.firstname}
-                      sx={{
-                        m: 2,
-                      }}
-                    />
 
-                    <MDInput
-                      type="text"
-                      label="Sobrenome"
-                      name="lastname"
-                      onChange={onChange}
-                      required="true"
-                      value={employee.lastname}
-                      sx={{
-                        m: 2,
-                      }}
-                    />
-                    <Select p={5}
-                      placeholder="Departamento"
-                      name="departmentid"
-                      value={employee.departmentid}
-                      onChange={onChange}
-                      displayEmpty
-                    >
-                      <MenuItem value={0}>Selecione</MenuItem>
-
-                      {departments.map((department) => (<MenuItem value={department.id}>{department.department_name}</MenuItem>))
-                      }
-                    </Select>
-
-                    <Select p={5}
-                                            placeholder="Situação"
-                                            name="active"
-                                            value={employee.active}
-                                            onChange={onChange}
-                                            displayEmpty
-                                        >
-                                            <MenuItem value="">Selecione</MenuItem>
-                                            <MenuItem value="true">Ativo</MenuItem>
-                                            <MenuItem value="false">Inativo</MenuItem>
-                                        </Select>
-                  </MDBox>
-
+              <MDBox m={4}>
+                <MDBox ml={2} lineHeight={1}>
+                  <MDButton color="info" onClick={() => newDepartment()}>
+                    Novo departamento
+                  </MDButton>
                 </MDBox>
-                <MDBox m={5} p={5}>
+                <form onSubmit={onSubmit}>
+                  <MDBox m={5}>
+                    <MDBox
+                      mx={2}
+                      mt={-3}
+                      py={3}
+                      px={2}
+                      variant="gradient"
+                      bgColor="light"
+                      borderRadius="lg"
+                      coloredShadow="secondary"
+                    >
+                      <MDTypography variant="h6" color="black">
+                        Dados pessoais
+                      </MDTypography>
+                    </MDBox>
+                    <MDBox m={3}>
+                      <MDInput
+                        type="text"
+                        label="Nome"
+                        name="firstname"
+                        size="large"
+                        onChange={onChange}
+                        required="true"
+                        value={employee.firstname}
+                        sx={{
+                          m: 2,
+                        }}
+                      />
+
+                      <MDInput
+                        type="text"
+                        label="Sobrenome"
+                        name="lastname"
+                        onChange={onChange}
+                        required="true"
+                        value={employee.lastname}
+                        sx={{
+                          m: 2,
+                        }}
+                      />
+                      <FormControl sx={{ p: 1, minWidth: 100 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label" >Departamento</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-autowidth-label"
+                          label="Departamento"
+                          name="departmentid"
+                          value={employee.departmentid}
+                          onChange={onChange}
+                          displayEmpty
+                        >
+                          <MenuItem value={0}>Selecione</MenuItem>
+
+                          {departments.map((department) => (<MenuItem value={department.id}>{department.department_name}</MenuItem>))
+                          }
+                        </Select>
+                      </FormControl>
+
+                      <FormControl sx={{ p: 1, minWidth: 100 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label" >Situação</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-autowidth-label"
+                          label="Situação"
+                          name="active"
+                          value={employee.active}
+                          onChange={onChange}
+                          displayEmpty
+                        >
+                          <MenuItem value="">Selecione</MenuItem>
+                          <MenuItem value="true">Ativo</MenuItem>
+                          <MenuItem value="false">Inativo</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </MDBox>
+
+                  </MDBox>
+                  <MDBox m={5} p={5}>
                     <MDButton type="submit" color="info">
                       Atualizar
                     </MDButton>
                     &nbsp;&nbsp;&nbsp;
                     <MDButton color="info" onClick={() => onCancel()}>Cancelar</MDButton>
                   </MDBox>
-              </form>
-            </MDBox>
-          </Card>
+                </form>
+              </MDBox>
+            </Card>
+          </Grid>
         </Grid>
-</Grid>
       </MDBox>
       <Footer />
     </DashboardLayout>

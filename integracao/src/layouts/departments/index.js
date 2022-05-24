@@ -75,7 +75,7 @@ export default function Tables() {
   );
 
 
-  function editDepartment (id) {
+  function editDepartment(id) {
     const departmentname = prompt("Insira o nome do departamento", "");
     if (departmentname == null || departmentname === "") {
       alert("Nenhum valor inserido!");
@@ -86,7 +86,7 @@ export default function Tables() {
 
   async function saveDepartment(id, name) {
     try {
-      await api.patch('/department', {id:id, departmentname: name }).then((response) => {
+      await api.patch('/department', { id: id, departmentname: name }).then((response) => {
         alert("Departamento alterado.")
       });
     } catch (err) {
@@ -118,7 +118,7 @@ export default function Tables() {
       acao: (
         <MDBox display="flex" alignItems="center" lineHeight={1}>
           <MDBox ml={2} lineHeight={1}>
-          <MDButton variant="text" color="info" onClick={() => editDepartment(department.id)}>
+            <MDButton variant="text" color="info" onClick={() => editDepartment(department.id)}>
               <Icon>editrounded</Icon>
             </MDButton>
           </MDBox>

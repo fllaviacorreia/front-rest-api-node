@@ -42,13 +42,24 @@ import MDProgress from "components/MDProgress";
 export default function Tables() {
 
   const [products, setProducts] = useState([]);
-  const [section, setSection] = useState("");
+  const [sections, setSections] = useState([]);
+  const [sentinela, setSentinela] = useState(false);
 
   useEffect(() => {
-    api.get('product').then(response => {
-      setProducts(response.data.product);
-    });
+    if(!sentinela){
+      api.get("section").then(response => {
+        setSections(response.data.sections);
+       });
+      api.get('product').then(response => {
+        setProducts(response.data.product);
+      });      
+    }
+    if(products.length > 0 && sections.length > 0){
+      setSentinela(true);
+    }
+    
   });
+
 
   async function handleDelete(id){
     try{
@@ -92,11 +103,12 @@ export default function Tables() {
   }
 
   function getNameSection(id) {
-  
-    api.get(`section/${id}`).then(response => {
-     setSection(response.data.section.section_name);
-    });
-    return <GenericInformation information={section} />
+    if(sections.length > 0){
+      const section = sections.filter(section => section.id === id);
+      return <GenericInformation information={section[0].section_name} />
+    }
+    return <GenericInformation information={"-"} />
+    
   }
 
   function typeActive(tipo) {
@@ -138,7 +150,9 @@ export default function Tables() {
         <GenericInformation information={product.product_name} />
       ),
       price: (
-        <GenericInformation information={product.price} />
+        <MDTypography variant="caption" color="text" fontWeight="medium">
+                R$ {product.price}
+        </MDTypography>
       ),
       description: (
         <GenericInformation information={product.description} />

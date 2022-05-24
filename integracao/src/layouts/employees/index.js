@@ -91,9 +91,9 @@ export default function Tables() {
   }
 
   function getNameDepartment(id) {
-  
+
     api.get(`department/${id}`).then(response => {
-     setDepartment(response.data.department.department_name);
+      setDepartment(response.data.department.department_name);
     });
     return <GenericInformation information={department} />
   }

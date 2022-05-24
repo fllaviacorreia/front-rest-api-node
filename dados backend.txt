@@ -73,7 +73,9 @@ const {
             totalvalue,
             clientid,
             employeeid,
-            products
+            products,
+            latitude,
+            longitude
         } = req.body
         
 app.use('/section', sectionRoutes)

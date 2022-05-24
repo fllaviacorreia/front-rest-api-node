@@ -23,6 +23,8 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import FormControl  from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -184,8 +186,12 @@ function FormClient() {
                                                 </InputMask>
                                             </MDBox>
 
-                                            <Select p={5}
-                                                placeholder="Situação"
+                                            <FormControl sx={{ p: 1, minWidth: 100 }}>
+                          <InputLabel id="demo-simple-select-autowidth-label" >Situação</InputLabel>
+                          <Select
+                            labelId="demo-simple-select-autowidth-label"
+                            id="demo-simple-select-autowidth"
+                            label="Situação"
                                                 name="active"
                                                 value={client.active}
                                                 onChange={onChange}
@@ -195,7 +201,7 @@ function FormClient() {
                                                 <MenuItem value="true">Ativo</MenuItem>
                                                 <MenuItem value="false">Inativo</MenuItem>
                                             </Select>
-
+</FormControl>
 
                                         </MDBox>
                                     </MDBox>

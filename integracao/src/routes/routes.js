@@ -56,19 +56,20 @@ import FormEditEmployee from "forms/employees/editEmployee";
 import FormProduct from "forms/products";
 import FormEditProduct from "forms/products/editProduct";
 import FormSale from "forms/sales";
+import FormEditSale from "forms/sales/editSale";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
 
 const routes = [
-  {
-    type: "collapse",
-    name: "Página inicial",
-    key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Página inicial",
+  //   key: "dashboard",
+  //   icon: <Icon fontSize="small">dashboard</Icon>,
+  //   route: "/dashboard",
+  //   component: <Dashboard />,
+  // },
   {
     type:"collapse",
     name: "Clientes",
@@ -147,6 +148,12 @@ const routes = [
     key:"newSale",
     route: "/sales/create",
     component: <FormSale />,
+  },
+
+  {
+    key:"editSale",
+    route: "/sales/edit/:id",
+    component: <FormEditSale />,
   },
   {
     type: "collapse",

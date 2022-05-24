@@ -20,6 +20,8 @@ import api from "services/api";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -188,7 +190,7 @@ function FormEditProduct() {
 
                       <MDInput
                         type="text"
-                        label="Preço"
+                        label="Preço (R$)"
                         name="price"
                         onChange={onChange}
                         required="true"
@@ -233,30 +235,38 @@ function FormEditProduct() {
                           m: 2,
                         }}
                       />
-                      <Select pt={5}
-                        placeholder="Seção"
-                        name="sectionid"
-                        value={product.sectionid}
-                        onChange={onChange}
-                        displayEmpty
-                      >
-                        <MenuItem value={0}>Selecione</MenuItem>
+                      <FormControl sx={{ p: 1, minWidth: 100 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label" >Seção</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-autowidth-label"
+                          labelr="Seção"
+                          name="sectionid"
+                          value={product.sectionid}
+                          onChange={onChange}
+                          displayEmpty
+                        >
+                          <MenuItem value={0}>Selecione</MenuItem>
 
-                        {sections.map((section) => (<MenuItem value={section.id}>{section.section_name}</MenuItem>))
-                        }
-                      </Select>
+                          {sections.map((section) => (<MenuItem value={section.id}>{section.section_name}</MenuItem>))
+                          }
+                        </Select>
+                      </FormControl>
 
-                      <Select p={5}
-                        placeholder="Situação"
-                        name="active"
-                        value={product.active}
-                        onChange={onChange}
-                        displayEmpty
-                      >
-                        <MenuItem value="">Selecione</MenuItem>
-                        <MenuItem value="true">Ativo</MenuItem>
-                        <MenuItem value="false">Inativo</MenuItem>
-                      </Select>
+                      <FormControl sx={{ p: 1, minWidth: 100 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label" >Situação</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-autowidth-label"
+                          labelr="Situação"
+                          name="active"
+                          value={product.active}
+                          onChange={onChange}
+                          displayEmpty
+                        >
+                          <MenuItem value="">Selecione</MenuItem>
+                          <MenuItem value="true">Ativo</MenuItem>
+                          <MenuItem value="false">Inativo</MenuItem>
+                        </Select>
+                      </FormControl>
                     </MDBox>
 
                   </MDBox>
