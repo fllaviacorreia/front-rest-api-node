@@ -47,48 +47,40 @@ function FormSale() {
 
   const initSale = {
     paymentmethod: "",
-    installment: 0,
+    installment: 1,
     totalvalue: 0,
     clientid: 0,
     employeeid: 0,
     products: [],
-    latitude: "",
-    longitude: "",
+    latitude: 0,
+    longitude: 0,
   };
 
   const [sale, setSale] = useState(initSale);
   
   const [clients, setClients] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [sentinela, setSentinela] = useState(false);
 
   useEffect(() => {
-    if (!sentinela) {     
+    navigator.geolocation.getCurrentPosition(function (position) {
+        setSale({ ...sale, "latitude": position.coords.latitude })          
+        setSale({ ...sale, "longitude": position.coords.longitude })
+    });
+
+    // if (!sentinela) {     
       api.get("client").then((response) => {
         setClients(response.data.clients);
       });
       api.get("employee").then((response) => {
         setEmployees(response.data.employees);
       });
-
-      if (clients.length > 0 && employees.length > 0 )  {
-        setSentinela(true);
-      }
-    }
-
+    //   if (clients.length > 0 && employees.length > 0 )  {
+    //     setSentinela(true);
+    //   }
+    // }    
     
-      console.log("sale.latitude", sale.latitude)
-      console.log("sale.longitude", sale.longitude)
-        navigator.geolocation.getCurrentPosition(function (position) {
-          let latitude = position.coords.latitude;
-          let longitude = position.coords.longitude;
-        
-            setSale({ ...sale, "latitude": latitude })
-          
-            setSale({ ...sale, "longitude": longitude })
-        });
       
-  }, [sentinela, clients.length, employees.length, sale])
+  }, )
 
 
   function onSubmit(ev) {

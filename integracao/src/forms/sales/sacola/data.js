@@ -17,12 +17,24 @@ function Data(props) {
     function onClickAdd(id, quantity, value) {
         const products = props.sale.products;
         const verify = products.filter(product => product.id === id)
+       
+        console.log(verify)
+        if (verify.lenght !== 0) {
+            let idProduct = 0;
+            let quantityProduct = 0;
 
-        if (verify.lenght > 0) {
             products.forEach(function (item) {
                 if (item.id === id) {
-                    item.quantity = item.quantity + quantity
+                     idProduct = item
+                     quantityProduct = item.quantity + quantity                    
                 }
+            });
+
+            // eslint-disable-next-line no-const-assign
+            props.setSale({ ...props.sale, "products": products.filter(p => p.id !== id) }); 
+            products.push({
+                id: idProduct,
+                quantity: quantityProduct,
             });
         } else {
             //adicionando novo produto ao array em sale
@@ -30,8 +42,9 @@ function Data(props) {
                 id: id,
                 quantity: quantity,
             });
-        }
 
+            
+        }
         props.setSale({ ...props.sale, "products": products });
 
         //somando total atual

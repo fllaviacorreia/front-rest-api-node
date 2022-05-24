@@ -12,37 +12,63 @@ import MDInput from "components/MDInput";
 
 function Data(props) {
     const product = props.product
-    const [quantity, setQuantity] = useState(props.product.sales_has_product.product_quantity);   
+    const [quantity, setQuantity] = useState(props.product.quantity); 
 
+    const initProduct = {
+        id: 0,
+        productname: "",
+        price: "",
+        description: "",
+        technicalinformation: "",
+        quantity: 0,
+        sectionid: 0,
+        active: true,    
+      };
+    
+      const [productDB, setProductDB] = useState(initProduct);
+
+    useEffect(() => {    
+        api.get(`/product/${product.id}`).then((response) => {
+          const productAux = {
+            id: response.data.product.id,
+            productname: response.data.product.product_name,
+            price: response.data.product.price,
+            description: response.data.product.description,
+            technicalinformation: response.data.product.technical_information,
+            quantity: response.data.product.quantity,
+            sectionid: response.data.product.SectionId,
+            active: response.data.product.active,
+          }
+          setProductDB({ ...productAux });
+
+        }); 
+  });
+
+  console.log(productDB)
     function onClickRemove(id) {
-        console.log(quantity)
         const products = props.sale.products;
         products.forEach(function (product) {
             if (product.id === id) {
-                console.log(product)
-
-                let quantityAtual = product.sales_has_product.product_quantity
+                let quantityAtual = product.quantity
                 let total = 0;
-                console.log(quantityAtual)
+                
                 if (quantity < 1) {
                     //subtraindo do total atual                    
                     total = props.sale.totalvalue - (quantityAtual * product.price);
                     props.setSale({ ...props.sale, "totalvalue": total });
-                    product.sales_has_product.product_quantity = 0;                  
+                    product.quantity = 0;                  
                 } 
-                else if (quantity > 0 && quantity < product.sales_has_product.product_quantity) {
+                else if (quantity > 0 && quantity < product.quantity) {
                     //subtraindo quando não são todos os produtos removidos
-                    total = props.sale.totalvalue - ((quantityAtual - quantity) * product.price);
+                    total = props.sale.totalvalue - ((quantityAtual - quantity) * productDB.price);
                     props.setSale({ ...props.sale, "totalvalue": total });
-                    product.sales_has_product.product_quantity = quantity;
+                    product.quantity = quantity;
                 }
             }
         });
 
         if (quantity < 1) {
-            const newProducts = products.filter(product => product.sales_has_product.product_quantity > 0);
-
-            console.log(newProducts)
+            const newProducts = products.filter(product => product.quantity > 0);
             props.setSale({ ...props.sale, "products": newProducts });    
         }
     }
@@ -59,7 +85,7 @@ function Data(props) {
 
     return (
         <MDBox display="flex" justifyContent="space-between" p={2}>
-            <GenericInformation information={product.product_name} />
+            <GenericInformation information={productDB.productname} />
             <MDInput
                 type="number"
                 label="Quantidade"

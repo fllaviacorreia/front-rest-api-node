@@ -67,7 +67,7 @@ function FormSale() {
     const initSale = {
         id: 0,
         paymentmethod: "",
-        installment: 0,
+        installment: 1,
         totalvalue: 0,
         clientid: 0,
         employeeid: 0,
@@ -80,7 +80,6 @@ function FormSale() {
 
     const [sale, setSale] = useState(initSale);
 
-    const [sentinela, setSentinela] = useState(false);
 
     useEffect(() => {
         if (id !== null || id !== "") {
@@ -105,6 +104,11 @@ function FormSale() {
                   }
                   setEmployee({ ...employeeAux });
 
+                const newProducts = response.data.sale.products.map(product => ({
+                    id: product.id,
+                    quantity: product.sales_has_product.product_quantity,
+                }));
+
                 const saleAux = {
                     id: response.data.sale.id,
                     paymentmethod: response.data.sale.payment_method,
@@ -112,7 +116,7 @@ function FormSale() {
                     totalvalue: response.data.sale.total_value,
                     clientid: response.data.sale.ClientId,
                     employeeid: response.data.sale.employeeId,
-                    products: response.data.sale.products,
+                    products: newProducts,
                     latitude: response.data.sale.latitude,
                     longitude: response.data.sale.longitude,
                 }
@@ -126,21 +130,13 @@ function FormSale() {
 
     function onSubmit(ev) {
         ev.preventDefault();
-        const newProducts = sale.products.map(product => ({
-            id: product.id,
-            quantity: product.sales_has_product.product_quantity,
-        }));
+       
 
-        console.log(sale);
-
-        console.log(newProducts);
-        setSale({...sale, "products": newProducts})
         api.patch("/sale", sale).then((response) => {
             alert("Venda alterada com sucesso!");
-         //   navigate("/sales");
+            navigate("/sales");
         });
     }
-
 
     //pode-se adicionar um verificador para confirmar saída.
     function onCancel(ev) {
